@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,7 +85,12 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+#
+# URL de base pour accéder aux fichiers médias
+MEDIA_URL = "/media/"
 
+# Chemin absolu du répertoire où les fichiers médias seront stockés
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
