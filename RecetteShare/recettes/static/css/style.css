@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+/* Couleurs personnalisées */
+:root {
+    --primary-color: #F39C12;
+    --secondary-color: #FAF9F6;
+    --highlight-color: #5E3370;
+    --success-color: #27AE60;
+    --text-color: #2C3E50;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.navbar {
+    background-color: var(--primary-color);
+}
+.navbar-nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.navbar .navbar-brand {
+    color: white !important;
+    font-family: 'Pacifico', cursive; 
+           font-size: 28px; 
+           font-weight: bold; 
+           color: var(--primary-color); 
+           text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+           letter-spacing: 1px;
+}
+
+.navbar .nav-link {
+    color: white !important;
+}
+
+.menu {
+    transition: color 0.3s ease;
+}
+
+.menu:hover {
+    color: var(--highlight-color);
+}
+footer {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+
+.container {
+    padding: 2rem;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.py-3 {
+    padding: 1.5rem 0 !important;
+}
+
+

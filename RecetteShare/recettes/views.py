@@ -67,3 +67,8 @@ def deconnexion(request):
 def accueil(request):
     # On rend la page d'accueil
     return render(request, "recettes/accueil.html")
+
+#page  mes recettes
+def mes_recettes(request):
+    # On rend la page mes recettes
+    return render(request, "recettes/mes_recettes.html")
