@@ -3,6 +3,7 @@ from django import forms  # Importation du module forms de Django pour créer de
 from django.contrib.auth.models import User  # Importation du modèle User pour gérer les utilisateurs
 from django.contrib.auth.forms import UserCreationForm  # Importation du formulaire UserCreationForm pour la création d'utilisateurs
 from .models import Recette  # Importation du modèle Recette depuis les modèles de l'application
+from .models import Commentaire  # Importation du modèle Commentaire depuis les modèles de l'application
 
 # Formulaire d'inscription
 class InscriptionForm(UserCreationForm):  # Définition d'une classe de formulaire pour l'inscription des utilisateurs, héritant de UserCreationForm
@@ -61,3 +62,12 @@ class RecetteForm(forms.ModelForm):  # Définition d'une classe de formulaire po
     ingredients = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Liste des ingrédients'}))  # Champ ingrédients avec des attributs de widget personnalisés
     # Champ image avec des attributs de widget personnalisés, non requis
     image = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'form-control'}))  # Champ image avec des attributs de widget personnalisés, non requis
+
+# Formulaire de commentaires
+class CommentaireForm(forms.ModelForm):  # Définition d'une classe de formulaire pour la création et la modification de commentaires, héritant de ModelForm
+    class Meta:  # Classe interne Meta pour définir des métadonnées pour le formulaire
+        model = Commentaire  # Le modèle associé à ce formulaire est le modèle Commentaire
+        fields = ['contenu']  # Champs du formulaire à inclure
+    
+    # Champ contenu avec des attributs de widget personnalisés
+    contenu = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Votre commentaire'}))  # Champ contenu avec des attributs de widget personnalisés

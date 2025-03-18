@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from.models import Recette
 from .forms import RecetteForm
+from django.core.paginator import Paginator
+from .forms import CommentaireForm
+from.models import Commentaire
 
 
 
@@ -71,6 +74,9 @@ def deconnexion(request):
 # Page d'accueil
 def accueil(request):  # Définition de la fonction accueil qui prend en paramètre la requête HTTP
     recettes = Recette.objects.all()  # Récupère toutes les recettes de la base de données
+    paginator = Paginator(recettes, 6)  # 6 recettes par page
+    page_number = request.GET.get('page')  # Récupère le numéro de page depuis l'URL
+    recettes = paginator.get_page(page_number)  # Récupère les recettes de la page demandée
     return render(request, 'recettes/accueil.html', {'recettes': recettes})  # La fonction render génère une réponse HTTP avec le contenu du template "recettes/accueil.html" et passe toutes les recettes au contexte
 
 # Afficher les recettes de l'utilisateur connecté
@@ -128,6 +134,37 @@ def supprimer_recette(request, recette_id):  # Définition de la fonction suppri
     return redirect('mes_recettes')  # Redirige vers la page mes recettes après suppression
 
 # voir les détails d'une recette
-def detail_recette(request, recette_id):  # Définition de la fonction detail_recette qui prend en paramètre la requête HTTP et l'identifiant de la recette
+def detail_recette(request, recette_id):
+    recette = get_object_or_404(Recette, id=recette_id)
+    commentaires = recette.commentaires.all().order_by("-date_creation")  # Trie les commentaires du plus récent au plus ancien
+    return render(request, "recettes/detail_recette.html", {"recette": recette, "commentaires": commentaires})
+
+# Ajouter un commentaire
+@login_required
+def ajouter_commentaire(request, recette_id):  # Définition de la fonction ajouter_commentaire qui prend en paramètre la requête HTTP et l'identifiant de la recette
     recette = get_object_or_404(Recette, id=recette_id)  # Récupère la recette avec l'identifiant donné ou renvoie une erreur 404 si elle n'existe pas
-    return render(request, 'recettes/detail_recette.html', {'recette': recette})  # La fonction render génère une réponse HTTP avec le contenu du template "detail_recette.html" et passe la recette au contexte
+
+    if request.method == 'POST':  # Vérifie si la méthode de la requête est POST
+        form = CommentaireForm(request.POST)  # Crée une instance du formulaire CommentaireForm avec les données POST
+        if form.is_valid():  # Vérifie si le formulaire est valide
+            commentaire = form.save(commit=False)
+            commentaire.auteur = request.user  # Associe l'utilisateur connecté comme auteur du commentaire
+            commentaire.recette = recette  # Associe la recette au commentaire
+            commentaire.save()  # Sauvegarde le commentaire dans la base de données
+            return redirect('detail_recette', recette_id=recette_id)  # Redirige vers la page de détail de la recette après la création du commentaire
+    else:  # Si la méthode n'est pas POST
+        form = CommentaireForm()  # Crée une instance vide du formulaire CommentaireForm
+        return redirect('detail_recette', {'form': form, 'recette': recette})  # La fonction render génère une réponse HTTP avec le contenu du template "ajouter_commentaire.html" et passe le formulaire et la recette au contexte
+    
+# Supprimer un commentaire
+@login_required
+def supprimer_commentaire(request, recette_id, commentaire_id):  # Définition de la fonction supprimer_commentaire qui prend en paramètre la requête HTTP, l'identifiant de la recette et l'identifiant du commentaire
+    commentaire = get_object_or_404(Commentaire, id=commentaire_id, recette_id=recette_id)  # Récupère le commentaire avec l'identifiant donné et l'identifiant de la recette ou renvoie une erreur 404 si elle n'existe pas
+    commentaire.delete()  # Supprime le commentaire
+    return redirect('detail_recette', recette_id=recette_id)
+
+#afficher les commentaires par recette
+def recette_commentaires(request, recette_id):  # Définition de la fonction recette_commentaires qui prend en paramètre la requête HTTP et l'identifiant de la recette
+    recette = get_object_or_404(Recette, id=recette_id)  # Récupère la recette avec l'identifiant donné ou renvoie une erreur 404 si elle n'existe pas
+    commentaires = recette.commentaires.all()  # Récupère tous les commentaires associés à la recette
+    return render(request, 'recettes/détail_recette.html', {'recette': recette, 'commentaires': commentaires})
