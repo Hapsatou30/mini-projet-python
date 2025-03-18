@@ -29,10 +29,56 @@
 
         <!-- Bouton retour -->
         <div class="mt-4 ">
-            <a href="{% url 'mes_recettes' %}" class="btn btn-lg" style="background-color: #F39C12; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold;">
+            <a href="{% url 'accueil' %}" class="btn btn-lg" style="background-color: #F39C12; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold;">
                 <i class="fas fa-arrow-left"></i> Retour
             </a>
         </div>
     </div>
+    <!-- Section des commentaires -->
+<div class="mt-5">
+    <h3 style="color: var(--highlight-color);">Commentaires</h3>
+
+    <!-- Formulaire pour ajouter un commentaire -->
+    <form method="POST" action="{% url 'ajouter_commentaire' recette.id %}" class="mt-3">
+        {% csrf_token %}
+        <div class="mb-3">
+            <textarea name="contenu" class="form-control" rows="3" placeholder="Ajoutez un commentaire..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-paper-plane"></i> Envoyer
+        </button>
+    </form>
+
+    <!-- Liste des commentaires -->
+    <div class="mt-5">
+        <h3 class="mb-3" style="color: #5E3370; font-weight: bold;">Commentaires</h3>
+    
+        <div class="card shadow-sm border-0 p-3" style="border-radius: 10px; background: #f8f9fa;">
+            <ul class="list-group list-group-flush">
+                {% for commentaire in commentaires %}
+                    <li class="list-group-item d-flex justify-content-between align-items-start" style="border-bottom: 1px solid #ddd; padding: 15px;">
+                        <div>
+                            <p class="fw-bold text-primary mb-1">{{ commentaire.auteur.username }}</p>
+                            <small class="text-muted">{{ commentaire.date_creation|date:"d/m/Y H:i" }}</small>
+                            <p class="mt-2" style="color: #333;">{{ commentaire.contenu }}</p>
+                        </div>
+                        {% if commentaire.auteur == request.user %}
+                        <form method="POST" action="{% url 'supprimer_commentaire' recette.id commentaire.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-center text-muted">Aucun commentaire pour l'instant.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+</div>
+
 </div>
 {% endblock %}

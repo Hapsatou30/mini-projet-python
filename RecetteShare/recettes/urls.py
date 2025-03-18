@@ -21,4 +21,11 @@ urlpatterns = [
 
     # Voir les détails d'une recette
     path('recette/<int:recette_id>/', views.detail_recette, name='detail_recette'),
+
+    # Ajouter un commentaire à une recette
+    path('recette/<int:recette_id>/ajouter_commentaire/', views.ajouter_commentaire, name='ajouter_commentaire'),
+    # Afficher les commentaires d'une recette
+    path('recette/<int:recette_id>/commentaires/', views.recette_commentaires, name='commentaires'),
+    # Supprimer un commentaire
+    path('recette/<int:recette_id>/commentaire/<int:commentaire_id>/supprimer/', views.supprimer_commentaire, name='supprimer_commentaire'),
 ]
