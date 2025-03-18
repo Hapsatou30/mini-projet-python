@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from.models import Recette
 from .forms import RecetteForm
+from django.core.paginator import Paginator
 
 
 
@@ -71,6 +72,9 @@ def deconnexion(request):
 # Page d'accueil
 def accueil(request):  # Définition de la fonction accueil qui prend en paramètre la requête HTTP
     recettes = Recette.objects.all()  # Récupère toutes les recettes de la base de données
+    paginator = Paginator(recettes, 6)  # 6 recettes par page
+    page_number = request.GET.get('page')  # Récupère le numéro de page depuis l'URL
+    recettes = paginator.get_page(page_number)  # Récupère les recettes de la page demandée
     return render(request, 'recettes/accueil.html', {'recettes': recettes})  # La fonction render génère une réponse HTTP avec le contenu du template "recettes/accueil.html" et passe toutes les recettes au contexte
 
 # Afficher les recettes de l'utilisateur connecté

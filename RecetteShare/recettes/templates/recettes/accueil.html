@@ -22,32 +22,53 @@
         <div class="col-sm-6 col-md-4 mb-4">
             <div class="card">
                 <img src="{{ recette.image.url }}" class="card-img-top" alt="{{ recette.titre }}">
-                <!-- Ajout du badge pour les recettes populaires -->
-                {% if recette.popularite > 50 %}
-                <span class="badge-popular">Populaire</span>
-                {% endif %}
                 <div class="card-body">
-                    <h5 class="card-title">{{ recette.titre }}</h5>
-                    <p class="card-text">{{ recette.description|truncatechars:90 }}</p>
+                     <!-- Affichage de l'auteur -->
+                     <p class="card-text text-muted m-0" style="margin-bottom: 0; text-align: left;">Auteur: {{ recette.auteur.username }}</p> 
+                     <h5 class="card-title">{{ recette.titre|truncatechars:20  }}</h5>
+                     <p class="card-text">{{ recette.description|truncatechars:70 }}</p>
                     <div class="d-flex justify-content-around">
                         <a href="{% url 'detail_recette' recette.id %}" class="btn btn-outline-primary">
                             <i class="fas fa-eye"></i>
                         </a>
-                        <a href="{% url 'modifier_recette' recette.id %}" class="btn btn-outline-warning">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a href="{% url 'supprimer_recette' recette.id %}" class="btn btn-outline-danger"
-                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?');">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
+                        
                     </div>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+    <!-- Pagination simplifiée -->
+<div class="d-flex justify-content-between mt-4">
+    <nav>
+        <ul class="pagination pagination-custom">
+            {% if recettes.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ recettes.previous_page_number }}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <span class="page-link">
+                    {{ recettes.number }} / {{ recettes.paginator.num_pages }}
+                </span>
+            </li>
+
+            {% if recettes.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ recettes.next_page_number }}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 
 </div>
+
 {% endblock %}
 
 <!-- Ajout de styles CSS personnalisés -->
@@ -181,6 +202,24 @@
 .card:hover .card-img-top {
     transform: scale(1.05);
 }
+.pagination-custom {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination-custom .page-link {
+   
+    width: 70px;
+    height: 40px;
+    font-size: 1.2rem;
+    color: var(--highlight-color);
+    border: 2px solid var(--highlight-color);
+    text-align: center;
+    background-color: white;
+}
+
+
 
 </style>
 {% endblock %}
