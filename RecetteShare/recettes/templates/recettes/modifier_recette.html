@@ -1,0 +1,83 @@
+{% extends 'recettes/base.html' %}
+
+{% block title %}Modifier Recette - Food Lovers{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 600px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);">
+        <h1>Modifier la Recette</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="display: flex; justify-content: space-between; align-self: center;">
+                <a href="{% url 'mes_recettes' %}" class="btn" style="background-color: var(--highlight-color); color: white;">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+                <button type="submit" class="btn" style="background-color: var(--primary-color); color: white;">
+                    <i class="fas fa-plus-circle"></i> Ajouter la recette
+                </button>
+               </div>
+        </form>
+    </div>
+{% endblock %}
+{% block extra_css %}
+
+<!-- Ajout de styles CSS personnalisés -->
+ <style>
+    :root {
+    --primary-color: #F39C12;
+    --secondary-color: #FAF9F6;
+    --highlight-color: #5E3370;
+    --success-color: #27AE60;
+    --text-color: #2C3E50;
+}
+
+/* Style du conteneur */
+
+/* Titre */
+h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Champs du formulaire */
+.mb-3 input,
+.mb-3 textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.mb-3 input:focus,
+.mb-3 textarea:focus {
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 5px rgba(94, 51, 112, 0.3);
+    outline: none;
+}
+
+/* Boutons */
+.btn {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* Alignement des boutons */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+ </style>
+ {% endblock %}

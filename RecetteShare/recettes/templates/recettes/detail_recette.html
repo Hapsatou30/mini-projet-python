@@ -1,0 +1,36 @@
+{% extends 'recettes/base.html' %}
+
+{% block title %}Détail Recette - Food Lovers{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 border-0" style="max-width: 800px; margin: auto; border-radius: 15px; background: #fff;">
+        <!-- Titre de la recette -->
+        <h1 class="text-center" style="color: #5E3370; font-weight: bold;">{{ recette.titre }}</h1>
+        
+        <!-- Image de la recette -->
+        <div class="text-center mt-3">
+            <img src="{{ recette.image.url }}" class="img-fluid rounded shadow" alt="{{ recette.titre }}" style="max-height: 400px; width: 100%; object-fit: cover; border-radius: 10px;">
+        </div>
+        
+        <!-- Description -->
+        <div class="mt-4">
+            <h3 class="" style="color: var(--highlight-color);">Description</h3>
+            <p style="font-size: 1.1rem; color: #2C3E50;">{{ recette.description }}</p>
+        </div>
+
+        <!-- Ingrédients -->
+        <div class="mt-4">
+            <h3 class=""style="color: var(--highlight-color);">Ingrédients</h3>
+            <p style="font-size: 1.1rem; color: #2C3E50;">{{ recette.ingredients }}</p>
+        </div>
+
+        <!-- Bouton retour -->
+        <div class="mt-4 ">
+            <a href="{% url 'mes_recettes' %}" class="btn btn-lg" style="background-color: #F39C12; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold;">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
