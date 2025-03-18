@@ -17,74 +17,76 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <!-- Logo à gauche -->
-            <a class="navbar-brand" href="{% url 'accueil' %}">
-                Food<span style="color: var(--highlight-color);">Lovers</span>
-            </a>         
-            
-            <!-- Bouton Burger pour le mobile -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-    
-            <!-- Barre de navigation -->
-            <div class="collapse navbar-collapse d-flex justify-content-between w-100" id="navbarNav">
-                
-                <!-- Menu centré -->
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link menu" href="{% url 'accueil' %}">Accueil</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link menu" href="{% url 'mes_recettes' %}">Mes Recettes</a>
-                        </li>
-                    {% endif %}
-                </ul>
-    
-                <!-- Boutons à droite -->
-                <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        
-                        <li class="nav-item">
-                            <span class="nav-link">Bienvenue, {{ user.username }}</span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">
-                                <i class="fas fa-bell"></i>
-                                {% if user.notifications.count > 0 %} 
-                                    <span class="badge bg-danger">{{ user.notifications.count }}</span>
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-danger text-white" href="{% url 'deconnexion' %}">
-                                <i class="fas fa-sign-out-alt"></i> 
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'connexion' %}">Connexion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'inscription' %}">Inscription</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-    
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
+        <!-- Logo à gauche -->
+        <a class="navbar-brand" href="{% url 'accueil' %}">
+            Food<span style="color: var(--highlight-color);">Lovers</span>
+        </a>         
+        
+        <!-- Bouton Burger pour le mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Barre de navigation -->
+        <div class="collapse navbar-collapse d-flex justify-content-between w-100" id="navbarNav">
+            
+            <!-- Menu centré -->
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link menu" href="{% url 'accueil' %}">Accueil</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link menu" href="{% url 'mes_recettes' %}">Mes Recettes</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <!-- Boutons à droite -->
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    
+                    <li class="nav-item">
+                        <span class="nav-link">Bienvenue, {{ user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">
+                            <i class="fas fa-bell"></i>
+                            {% if user.notifications.count > 0 %} 
+                                <span class="badge bg-danger">{{ user.notifications.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-danger text-white" href="{% url 'deconnexion' %}">
+                            <i class="fas fa-sign-out-alt"></i> 
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'connexion' %}">Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inscription' %}">Inscription</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    
+    <div class="container-fluid p-0 mt-3">
         {% block content %}{% endblock %}
     </div>
 
-    <footer class="text-center mt-5 py-3">
-        <p>&copy; 2024 Food Lovers. Tous droits réservés.</p>
-    </footer>
+   <footer class="footer mt-5 py-4 text-center text-white">
+    <p>© 2025 Food Lovers. Tous droits réservés.</p>
+</footer>
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
+
 </html>

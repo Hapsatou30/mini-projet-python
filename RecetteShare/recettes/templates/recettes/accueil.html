@@ -1,10 +1,186 @@
-
 {% extends 'recettes/base.html' %}
 
 {% block title %}Accueil - Food Lovers{% endblock %}
 
 {% block content %}
-    <h1>Bienvenue sur Food Lovers</h1>
-    <p>Découvrez nos recettes les plus populaires.</p>
-    <!-- Autres contenus spécifiques à cette page -->
+<div class="container-fluid p-0 m-0">
+    <div class="hero-banner text-center text-white d-flex align-items-center justify-content-center">
+        <div class="text">
+            <h1 class="display-4">Bienvenue sur <span style="color: var(--primary-color);">Food Lovers</span></h1>
+            <p class="lead">Découvrez, partagez et savourez les meilleures recettes du moment !</p>
+            <a href="{% url 'create_recette' %}" class="btn  btn-lg mt-3"
+                style="background-color: var(--highlight-color); color: var(--secondary-color);">Ajouter une recette</a>
+        </div>
+    </div>
+</div>
+
+<!-- Liste des recettes sous forme de cartes -->
+<div class="container">
+    <h1 class="mb-4" style="color: var(--highlight-color);">Nos Recettes Populaires</h1>
+    <div class="row mt-5 justify-content-center">
+        {% for recette in recettes %}
+        <div class="col-sm-6 col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ recette.image.url }}" class="card-img-top" alt="{{ recette.titre }}">
+                <!-- Ajout du badge pour les recettes populaires -->
+                {% if recette.popularite > 50 %}
+                <span class="badge-popular">Populaire</span>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ recette.titre }}</h5>
+                    <p class="card-text">{{ recette.description|truncatechars:90 }}</p>
+                    <div class="d-flex justify-content-around">
+                        <a href="{% url 'detail_recette' recette.id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="{% url 'modifier_recette' recette.id %}" class="btn btn-outline-warning">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'supprimer_recette' recette.id %}" class="btn btn-outline-danger"
+                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
+
+<!-- Ajout de styles CSS personnalisés -->
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #F39C12;
+        --secondary-color: #FAF9F6;
+        --highlight-color: #5E3370;
+        --success-color: #27AE60;
+        --text-color: #2C3E50;
+    }
+
+    .btn {
+        border-radius: 4px;
+        padding: 10px 15px;
+        font-weight: 500;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    .hero-banner {
+        position: relative;
+        background: url('https://img.freepik.com/free-photo/top-view-delicious-pumpkin-soup-bowl_140725-85212.jpg?t=st=1742299818~exp=1742303418~hmac=b92f499f1a2cbfa18c173670a8f513f27f2fac02d50852fd47df741bfcef6617&w=996') center/cover no-repeat;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+
+    /* Ajout d'un overlay sombre semi-transparent */
+    .hero-banner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        /* Noir avec 50% d'opacité */
+    }
+
+    /* S'assurer que le texte reste au-dessus de l'overlay */
+    .hero-banner .text {
+        position: relative;
+        z-index: 1;
+    }
+
+    .text h1 {
+        font-size: 3rem;
+        font-weight: 700;
+    }
+
+    .card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        position: relative;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+        height: 220px;
+        object-fit: cover;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .card-body {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: var(--highlight-color);
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+        color: var(--text-color);
+        min-height: 60px;
+    }
+
+    .badge-popular {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: var(--success-color);
+        color: white;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        border-radius: 20px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.85;
+    }
+
+    .footer {
+        background-color: var(--highlight-color);
+        color: white;
+    }
+    .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(94, 51, 112, 0.3);
+}
+
+.card-img-top {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+</style>
 {% endblock %}

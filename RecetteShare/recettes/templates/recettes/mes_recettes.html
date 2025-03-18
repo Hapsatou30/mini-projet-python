@@ -1,10 +1,213 @@
 <!-- templates/mes_recettes.html -->
 {% extends 'recettes/base.html' %}
 
-{% block title %}Mes Recettes - Recette Share{% endblock %}
+{% block title %}Mes Recettes - Food Lovers{% endblock %}
 
 {% block content %}
-    <h1>Mes Recettes</h1>
-    <p>Voici la liste de vos recettes.</p>
-    <!-- Contenu spécifique à la page Mes Recettes -->
+    <div class="container " >
+        <h1 class="mb-4 " style="color: var(--highlight-color);">Mes Recettes</h1>
+
+        <!-- Bouton Ajouter une recette -->
+        <div class="text-end mb-4">
+            <a href="{% url 'create_recette' %}" class="btn .btn-add" style="background-color: var(--highlight-color); color: white;">
+                <i class="fas fa-plus-circle"></i> Ajouter une recette
+            </a>
+        </div>
+
+        <!-- Liste des recettes sous forme de cartes -->
+        <div class="container">
+            <div class="row mt-5 justify-content-center">
+             {% for recette in recettes %}
+             <div class="col-sm-6 col-md-4 mb-4">
+                     <div class="card">
+                         <img src="{{ recette.image.url }}" class="card-img-top" alt="{{ recette.titre }}">
+                         <!-- Ajout du badge pour les recettes populaires -->
+                         {% if recette.popularite > 50 %}
+                             <span class="badge-popular">Populaire</span>
+                         {% endif %}
+                         <div class="card-body">
+                             <h5 class="card-title">{{ recette.titre }}</h5>
+                             <p class="card-text">{{ recette.description|truncatechars:90 }}</p>
+                             <div class="d-flex justify-content-around">
+                                 <a href="{% url 'detail_recette' recette.id %}" class="btn btn-outline-primary">
+                                     <i class="fas fa-eye"></i> 
+                                 </a>
+                                 <a href="{% url 'modifier_recette' recette.id %}" class="btn btn-outline-warning">
+                                     <i class="fas fa-edit"></i> 
+                                 </a>
+                                 <a href="{% url 'supprimer_recette' recette.id %}" class="btn btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?');">
+                                     <i class="fas fa-trash-alt"></i> 
+                                 </a>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             {% endfor %}
+         </div>
+         
+        </div>
+    </div>
+{% endblock %}
+
+<!-- Ajout de styles CSS personnalisés -->
+{% block extra_css %}
+    <style>
+        :root {
+            --primary-color: #F39C12;
+            --secondary-color: #FAF9F6;
+            --highlight-color: #5E3370;
+            --success-color: #27AE60;
+            --text-color: #2C3E50;
+        }
+        
+        .btn {
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+
+.card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--highlight-color);
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    min-height: 60px;
+}
+
+.badge-popular {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--success-color);
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    opacity: 0.85;
+}
+.footer {
+    background-color: var(--highlight-color);
+    color: white;
+}
+.badge-popular {
+    top: 15px;
+    right: 15px;
+    background-color: #E67E22;
+    color: white;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(230, 126, 34, 0.4);
+}
+.btn-add {
+    background-color: var(--highlight-color);
+    color: white;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-add:hover {
+    background-color: #4A235A;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(94, 51, 112, 0.3);
+}
+
+.card-img-top {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+.btn-outline-primary, .btn-outline-warning, .btn-outline-danger {
+    padding: 8px 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--highlight-color);
+    color: white;
+}
+
+.btn-outline-warning:hover {
+    background-color: #F1C40F;
+    color: white;
+}
+
+.btn-outline-danger:hover {
+    background-color: #E74C3C;
+    color: white;
+}
+.card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-in-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+    </style>
 {% endblock %}

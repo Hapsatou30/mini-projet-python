@@ -56,7 +56,7 @@ ROOT_URLCONF = 'RecetteShare.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'recettes/templates'], #Chemin vers les templates
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], #Chemin vers les templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
